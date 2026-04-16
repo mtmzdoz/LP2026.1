@@ -1,0 +1,36 @@
+Cuantificador + (Uno o más)
+Cuantificador * (Cero o más)
+
+?: se llama Grupo de No Captura. Su única función es agrupar elementos para aplicarles un 
+cuantificador (como el *) sin crear una "memoria" extra en Python.
+Le dices a Python: "Usa este paréntesis solo para saber qué debo repetir 
+con el asterisco, pero no gastes memoria guardando las capturas internas".
+
+r (Raw String): Le dice a Python que trate las barras invertidas \ como caracteres literales y no como 
+comandos especiales (como \n que es salto de línea). Es el estándar para Regex.
+
+rf (Raw + Formatted): Combina lo anterior con la capacidad de insertar variables dentro del string usando llaves {}.
+
+Regla de oro para tu tarea: Usa rf cuando quieras construir un patrón complejo usando
+piezas que ya definiste (como usar {letra} dentro de {palabra}
+
+En tu condicion: C++ obliga a que los if y while tengan paréntesis reales. Por eso usamos \( al inicio y \) al final. 
+Sin la barra, Python pensaría que quieres crear un grupo de captura y no encontraría nada en el archivo.
+
+re.search(patron, texto): El Buscador Todoterreno
+Qué hace: Busca de izquierda a derecha en todo el texto hasta encontrar la primera vez que el patrón calce.
+
+re.fullmatch(patron, texto): El Juez Estricto
+Qué hace: Solo devuelve un resultado si el texto completo (desde la primera letra hasta la última) calza exactamente con el patrón.
+
+re.findall(patron, texto): El Recolector
+Qué hace: Busca en el texto y te devuelve una lista con todas las veces que encontró el patrón.
+
+match.group(numero): El Extractor (Tu mejor amigo)
+Qué hace: No es una función de re directamente, sino un método del resultado 
+que te dan search o match. Sirve para sacar el texto exacto que atrapaste entre paréntesis ().
+
+comentario_one_line = r"//[^\n]*" #CUALQUIER cosa que NO sea un salto de línea, repetida muchas veces (*)
+# [\s\S]*? -> CUALQUIER cosa (incluyendo saltos de línea), de forma no ambiciosa (*?)
+# \*/ -> Termina en */
+comentario_multi_line = r"/\*[\s\S]*?\*/"

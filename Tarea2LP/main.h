@@ -13,10 +13,13 @@ typedef struct Juego{
     int turno_enemigos; /* Contador para gestionar piezas lentas como la Torre */
     //agregados yo 
     int derrota; //Para terminar el programa cuando llegan a la base
+    PoolPiezas pool;
 
 } Juego;
 // Rol: Inicia el ciclo de juego, maneja el bucle principal de entrada (WASD+QEZC / 1234),
 //gestiona el avance de niveles y libera la memoria general al terminar o perder
 
+//Yo
+bool mover_jugador(struct Juego *juego, char direccion);
 
 #endif

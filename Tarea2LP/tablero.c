@@ -24,8 +24,6 @@ Tablero* tablero_crear(int ancho, int alto){
 }
 
 void tablero_imprimir(struct Juego *juego){
-    //system("clear");
-    //printf("DENTRO IMPRIMIR TAB turno=%d, vivos=%d\n", juego->turno, juego->vivos);
     Tablero *t = juego->t; //Tablero actual
     
     printf("================\n");
@@ -48,6 +46,11 @@ void tablero_imprimir(struct Juego *juego){
         printf(" %d ", x + 1);
     }
     printf("\n");
+
+    printf("================\n");
+    printf("Nivel: %d | Enemigos restantes: %d\n", juego->nivel_actual, juego->vivos);
+    printf(" Arsenal: [1] Escopeta (%d/%d) | [2] Sniper (%d/%d)\n", juego->arsenal.municion_actual[0], juego->arsenal.municion_maxima[0], juego->arsenal.municion_actual[1], juego->arsenal.municion_maxima[1]);
+    
 }
 
 void tablero_liberar(struct Tablero *tablero) {
@@ -59,6 +62,7 @@ void tablero_liberar(struct Tablero *tablero) {
             Celda *celda = (Celda*) tablero->celdas[y][x];  
             if (celda->pieza != NULL){
                 free(celda->pieza);
+                
             }
             free(celda); 
         }

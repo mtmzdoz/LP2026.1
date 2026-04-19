@@ -76,9 +76,28 @@ int main(){
     
     juego.t = tablero_crear(12, 12);
     juego.nivel_actual = 1;
+    juego.turno = 1;
+    juego.vivos = 0; // Muy importante empezar en 0 antes de contar a los enemigos
+    juego.derrota = 0;
 
     PoolNivel(&juego);
     spawn_nivel(&juego, juego.nivel_actual);
+
+    juego.arsenal.disparar[0] = escopeta;
+    juego.arsenal.municion_actual[0] = 2;
+    juego.arsenal.municion_maxima[0] = 2;
+
+    juego.arsenal.disparar[1] = francotirador;
+    juego.arsenal.municion_actual[1] = 1;
+    juego.arsenal.municion_maxima[1] = 1;
+
+    juego.arsenal.disparar[2] = granada;
+    juego.arsenal.municion_actual[2] = 1;
+    juego.arsenal.municion_maxima[2] = 1;
+
+    juego.arsenal.disparar[3] = especial; 
+    juego.arsenal.municion_actual[3] = 1;
+    juego.arsenal.municion_maxima[3] = 1;
 
     bool gameover= false;
 
@@ -89,7 +108,7 @@ int main(){
  
         char caracter;
         do{
-            printf("INgrese acción (Movimiento o Arma): ");
+            printf("Ingrese acción (Movimiento (WASD/QEZC) o Arma): ");
             scanf(" %c", &caracter);
             caracter = tolower(caracter);
             if (caracter != 'w' && caracter != 'a' && caracter != 's' && caracter != 'd' && caracter != 'q' && caracter != 'e' && caracter != 'z' && caracter != 'c' && caracter != '1' && caracter != '2' && caracter != '3' && caracter != '4' && caracter != 'x'){
@@ -101,24 +120,46 @@ int main(){
         if (caracter == 'x'){
             break; 
         }
-        if (caracter >= '1' && caracter <= '3'){
-            /*
-            int arma_id = caracter - '1'; // '1'es id 0 (normal), '2'es id 1(perforar), '3'es id 2 (especial)
+
+        bool accion = false;
+        if (caracter >= '1' && caracter <= '4'){
+            int arma_id = caracter - '1';
+            printf("DEBUG: Entrando a disparar_armas con ID %d\n", arma_id); // LOG 1
+
             bool disparo_exitoso = disparar_armas(&juego, arma_id);
-            resolver_danos(&juego); 
-            //No se avanza en caso de fallar el tiro
-            if (!disparo_exitoso){ 
+            if (!disparo_exitoso) { 
+                printf("DEBUG: El disparo FALLO (municion o direccion invalida)\n"); // LOG 2
                 continue; 
             }
-            */
+            
+            // Magia encapsulada: El main no sabe CÓMO se resuelve el daño, solo pide que se haga.
+            printf("DEBUG: Disparo exitoso, llamando a resolver_danos\n"); // LOG 3
+            resolver_danos(&juego); 
+            
+            accion = true;
         }else{
-            bool se_movio = mover_jugador(&juego, caracter);
+            accion = mover_jugador(&juego, caracter);
+            if (accion && juego.arsenal.municion_actual[0] < juego.arsenal.municion_maxima[0]) {
+                juego.arsenal.municion_actual[0]++;
+                sprintf(juego.mensaje, "¡Movimiento! Municion recargada (+1).");
+            }
             //Si ya esta en el borde y se mueve no avanza el turno 
-            if (!se_movio){
+            if (!accion){
                 continue;
             }
         }
-        
+        if (accion) {
+            mover_enemigos(&juego);
+    
+            // AQUÍ REVISAMOS LA DERROTA
+            if (juego.derrota == 1) {
+                tablero_imprimir(&juego);
+                printf("\n¡JAQUE MATE! El Rey ha sido capturado.\n");
+                gameover = true; // Esto romperá el bucle
+            }
+        } else {
+            printf("Acción inválida, no consumes turno.\n");
+        }
       
     }
     tablero_liberar(juego.t);

@@ -15,6 +15,8 @@ typedef struct Pieza{
     char tipo; /* ’P’=Peon, ’C’=Caballo, ’A’=Alfil, ’T’=Torre, ’Q’=Reina, ’R’=Rey */
     int hp;
     int x, y;
+    //yo 
+    int dano_pendiente;
 } Pieza;
 
 typedef struct Celda{
@@ -26,5 +28,7 @@ void mover_enemigos(struct Juego *juego);
 bool verificar_estado_rey(struct Juego *juego); /* Revisa si el Rey esta en Jaque */
 //Yo agreg                                      
 void PoolNivel(struct Juego *juego);
+void resolver_danos(struct Juego *juego);
+
 
 #endif

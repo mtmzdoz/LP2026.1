@@ -13,7 +13,9 @@ typedef struct Juego{
     int turno_enemigos; /* Contador para gestionar piezas lentas como la Torre */
     //agregados yo 
     int derrota; //Para terminar el programa cuando llegan a la base
+    int turno, vivos;
     PoolPiezas pool;
+    char mensaje[200]; //Para poder mostrar el mensaje de las armas
 
 } Juego;
 // Rol: Inicia el ciclo de juego, maneja el bucle principal de entrada (WASD+QEZC / 1234),

@@ -58,20 +58,21 @@ void spawn_nivel(struct Juego *juego, int nivel){
     
     // --- Peones (Segunda fila -> y = 1) ---
     for (int i = 0; i < juego->pool.peones; i++) {
-        int x,yPeon; 
-        int y1 = juego->t->H - 1;
-        int y2 = juego->t->H - 2;
+        int x; 
+        int y1 = juego->t->H - 2;
         do {
             x = rand() % W;
-            yPeon = (rand() % 2 == 0) ? y1 : y2; // Alterna entre la fila 1 y 2 para más dispersión
-        } while (((Celda*)t->celdas[yPeon][x])->pieza != NULL);
+            
+        } while (((Celda*)t->celdas[y1][x])->pieza != NULL);
 
         Pieza *peon = malloc(sizeof(Pieza));
         peon->tipo = 'P';
         peon->hp = 1;
         peon->x = x;
-        peon->y = yPeon;
-        ((Celda*)t->celdas[yPeon][x])->pieza = peon;
+        peon->y = y1;
+        peon->dano_pendiente = 0;
+        juego->vivos++;
+        ((Celda*)t->celdas[y1][x])->pieza = peon;
     }
 
     // --- Caballos (Primera fila -> y = 0) ---
@@ -86,6 +87,8 @@ void spawn_nivel(struct Juego *juego, int nivel){
         caballo->hp = 2;
         caballo->x = x;
         caballo->y = y;
+        caballo->dano_pendiente = 0;
+        juego->vivos++;
         ((Celda*)t->celdas[y][x])->pieza = caballo;
     }
 
@@ -101,6 +104,8 @@ void spawn_nivel(struct Juego *juego, int nivel){
         alfil->hp = 2;
         alfil->x = x;
         alfil->y = y;
+        alfil->dano_pendiente = 0;
+        juego->vivos++;
         ((Celda*)t->celdas[y][x])->pieza = alfil;
     }
 
@@ -116,6 +121,8 @@ void spawn_nivel(struct Juego *juego, int nivel){
         torre->hp = 4; // HP de la torre según PDF
         torre->x = x;
         torre->y = y;
+        torre->dano_pendiente = 0;
+        juego->vivos++;
         ((Celda*)t->celdas[y][x])->pieza = torre;
     }
 
@@ -131,6 +138,117 @@ void spawn_nivel(struct Juego *juego, int nivel){
         reina->hp = 3; // HP de la reina según PDF
         reina->x = x;
         reina->y = y;
+        reina->dano_pendiente = 0;
+        juego->vivos++;
         ((Celda*)t->celdas[y][x])->pieza = reina;
+    }
+}
+
+
+void mover_enemigos(struct Juego *juego) {
+    Tablero *t = juego->t;
+    Pieza *rey = juego->jugador;
+
+    // 1. Recolección (Igual que lo tienes tú)
+    Pieza *enemigos[144]; 
+    int total = 0;
+    for (int y = 0; y < t->H; y++) {
+        for (int x = 0; x < t->W; x++) {
+            Celda *c = (Celda*)t->celdas[y][x];
+            if (c->pieza != NULL && c->pieza->tipo != 'R') {
+                enemigos[total++] = c->pieza;
+            }
+        }
+    }
+
+    // 2. Procesar cada enemigo
+    for (int i = 0; i < total; i++) {
+        Pieza *e = enemigos[i];
+
+        if (e == NULL || ((Celda*)t->celdas[e->y][e->x])->pieza != e) {
+            continue; 
+        }
+
+        int n_x = e->x;
+        int n_y = e->y;
+
+        // --- LÓGICA DEL PEÓN ---
+        if (e->tipo == 'P') {
+            
+            int avance_y = -1; 
+            
+            // 1. ATAQUE: Solo ataca si el Rey está exactamente 1 casilla ADELANTE
+            // abs(rey->x - e->x) <= 1 cubre la casilla de al frente y las 2 diagonales
+            if (rey->y == e->y + avance_y && abs(rey->x - e->x) <= 1) {
+                n_x = rey->x;
+                n_y = rey->y;
+            } 
+            // 2. MOVIMIENTO NORMAL: Marcha recta
+            else {
+                n_y += avance_y;
+                // n_x se mantiene igual (no se mueve hacia los lados)
+            }
+          
+        } 
+            // 3. MOVIMIENTO NORMAL
+        
+        
+
+        // --- PASO 3: ACTUALIZACIÓN FÍSICA (Esto es lo que te faltaba) ---
+        // Solo movemos si la celda de destino está vacía
+        // (Ignoramos al Rey por ahora como pediste)
+        if (n_x >= 0 && n_x < t->W && n_y >= 0 && n_y < t->H) {
+            Celda *destino = (Celda*)t->celdas[n_y][n_x];
+
+            if (destino->pieza != NULL && destino->pieza->tipo == 'R') {
+                juego->derrota = 1; 
+                destino->pieza->tipo = 'X';
+                // No hacemos free aquí para evitar que el programa explote 
+                // intentando leer al Rey más tarde.
+            }
+            if (destino->pieza == NULL) {
+                // 1. Quitamos la pieza de su celda actual
+                ((Celda*)t->celdas[e->y][e->x])->pieza = NULL;
+                
+                // 2. Actualizamos las coordenadas internas de la pieza
+                e->x = n_x;
+                e->y = n_y;
+                
+                // 3. Ponemos la pieza en la nueva celda
+                destino->pieza = e;
+            }
+        }
+    }
+}
+
+
+void resolver_danos(struct Juego *j) {
+    for (int y = 0; y < j->t->H; y++) {
+        for (int x = 0; x < j->t->W; x++) {
+            Celda *c = (Celda*)j->t->celdas[y][x];
+            
+            if (c->pieza != NULL && c->pieza->tipo != 'R') {
+                Pieza *enemigo = c->pieza;
+                
+                if (enemigo->dano_pendiente > 0) {
+                    enemigo->hp -= enemigo->dano_pendiente;
+                    // Limpiamos el daño porque ya se aplicó a la vida
+                    enemigo->dano_pendiente = 0; 
+                    
+                    if (enemigo->dano_pendiente > 0) {
+                        printf("DEBUG: Enemigo tipo %c tiene %d de daño pendiente!\n", enemigo->tipo, enemigo->dano_pendiente);
+                        enemigo->hp -= enemigo->dano_pendiente;
+   
+                    }
+                    if (enemigo->hp <= 0) {
+                        sprintf(j->mensaje, "IMPACTO LETAL: ¡%c ha caido!", enemigo->tipo);
+                        
+                        free(enemigo);
+                        c->pieza = NULL;
+                        j->vivos--;
+                    }
+                }
+            }
+        }
     }
 }

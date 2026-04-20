@@ -3,20 +3,20 @@
 
 #include <stdbool.h>
 
-struct Juego; /* Forward declaration */
-typedef bool (*FuncArma)(struct Juego *j, int dir_x, int dir_y); /* Puntero a funcion */
+struct Juego; 
 
+typedef bool (*FuncArma)(struct Juego *j, int dir_x, int dir_y); 
 typedef struct Armas{
-    int municion_actual[4]; /* Se puede cambiar */
-    int municion_maxima[4]; /* Se puede cambiar */
-    FuncArma disparar[4]; /* Arreglo de punteros a funcion con las 4 armas */
+    int municion_actual[4]; 
+    int municion_maxima[4]; 
+    FuncArma disparar[4]; 
 } Armas;
 
 bool escopeta(struct Juego *j, int dir_x, int dir_y);
-bool francotirador(struct Juego *j, int dir_x, int dir_y); /* Ej (x,y) = (1,0), (0,-1)... */
+bool francotirador(struct Juego *j, int dir_x, int dir_y); 
 bool granada(struct Juego *j, int target_x, int target_y);
 bool especial(struct Juego *j, int dir_x, int dir_y); /* Se puede modificar */
-
+//Yo
 bool disparar_armas(struct Juego *juego, int arma_id);
 
 #endif

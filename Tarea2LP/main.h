@@ -8,20 +8,18 @@
 typedef struct Juego{
     Tablero *t;
     Armas arsenal;
-    Pieza *jugador; /* El Rey */
-    int nivel_actual; /* 1, 2 o 3 */
-    int turno_enemigos; /* Contador para gestionar piezas lentas como la Torre */
+    Pieza *jugador; //Rey
+    int nivel_actual; 
+    int turno_enemigos; //Para torre
     //agregados yo 
-    int derrota; //Para terminar el programa cuando llegan a la base
+    int derrota; //Para terminar el programa cuando matan al rey
     int turno, vivos;
     PoolPiezas pool;
-    char mensaje[200]; //Para poder mostrar el mensaje de las armas
-
-} Juego;
-// Rol: Inicia el ciclo de juego, maneja el bucle principal de entrada (WASD+QEZC / 1234),
-//gestiona el avance de niveles y libera la memoria general al terminar o perder
+    char mensaje[1000], piezaJaque; //Para poder mostrar el mensaje de las armas y quien fue el que mato al rey
+}Juego;
 
 //Yo
 bool mover_jugador(struct Juego *juego, char direccion);
+void sgte_nivel(struct Juego *juego);
 
 #endif

@@ -17,6 +17,6 @@ bool francotirador(struct Juego *j, int dir_x, int dir_y);
 bool granada(struct Juego *j, int target_x, int target_y);
 bool especial(struct Juego *j, int dir_x, int dir_y); /* Se puede modificar */
 //Yo
-bool disparar_armas(struct Juego *juego, int arma_id);
+bool dispararArmas(struct Juego *juego, int arma_id);
 
 #endif

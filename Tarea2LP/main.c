@@ -7,13 +7,13 @@
 #include "tablero.h"
 
 /*
-* Nombre: mover_jugador
+* Nombre: moverJugador
 * Parámetros: Puntero al juego y un char que indica la direccion donde se desea mover 'w', 'a', 's', 'd', 'q', 'e', 'z', 'c'
 * Retorno: Booleano true si el movimiento fue exitoso, false si fue bloqueado o fuera del tablero
 * Descripción: Calcula la nueva posición del jugador. Verifica que el movimiento no exceda los límites del tablero y que la 
 *           celda de destino esté vacía. Si es válido, actualiza la pos del jugador (Rey)
 */
-bool mover_jugador(Juego *juego, char direccion){ 
+bool moverJugador(Juego *juego, char direccion){ 
     int W = juego->t->W;
     int H = juego->t->H;
     int posxJugador = juego->jugador->x;
@@ -64,14 +64,14 @@ bool mover_jugador(Juego *juego, char direccion){
 }
 
 /*
-* Nombre: sgte_nivel
+* Nombre: sgteNivel
 * Parámetros:  Puntero al juego
 * Retorno: void
 * Descripción: Gestiona avanzar al siguiente nivel. Limpia al jugador en el tablero actual, libera la memoria del tablero viejo, 
 * incrementa el contador de nivel y crea un nuevo tablero (8x8 para el 
 * nivel 2, 6x6 para nivel 3). Finalmente, hace el pool de enemigos del nivel y los pone en el nuevo tablero.
 */
-void sgte_nivel(struct Juego *juego){
+void sgteNivel(struct Juego *juego){
     printf("\n ¡Nivel %d completado! Avanzando de nivel \n", juego->nivel_actual);
 
     Celda *celdaJugador = (Celda*)juego->t->celdas[juego->jugador->y][juego->jugador->x];
@@ -155,9 +155,9 @@ int main(){
 
         bool accion = false;
         if (caracter >= '1' && caracter <= '4'){
-            int arma_id = caracter - '1'; // '1'es id 0 (escopeta), '2'es id 1(sniper) etc
-            bool disparo_exitoso = disparar_armas(&juego, arma_id);
-            if (!disparo_exitoso){ 
+            int armaId = caracter - '1'; // '1'es id 0 (escopeta), '2'es id 1(sniper) etc
+            bool disparoExitoso = dispararArmas(&juego, armaId);
+            if (!disparoExitoso){ 
                 printf("DEBUG: El disparo FALLO (municion o direccion invalida)\n"); 
                 continue; 
             }
@@ -166,7 +166,7 @@ int main(){
             accion = true;
 
         }else{
-            accion = mover_jugador(&juego, caracter);
+            accion = moverJugador(&juego, caracter);
             for (int i = 0; i < 4; i++){
                 if (juego.arsenal.municion_actual[i] < juego.arsenal.municion_maxima[i]){
                     juego.arsenal.municion_actual[i]++;
@@ -197,7 +197,7 @@ int main(){
             }else if (juego.vivos <= 0){
                 if (juego.nivel_actual < 3){
                     
-                    sgte_nivel(&juego);
+                    sgteNivel(&juego);
                 }else{
                     tablero_imprimir(&juego);
                     printf("\n¡VICTORY ROYALE!\n");

@@ -19,7 +19,7 @@ typedef struct Juego{
 }Juego;
 
 //Yo
-bool mover_jugador(struct Juego *juego, char direccion);
-void sgte_nivel(struct Juego *juego);
+bool moverJugador(struct Juego *juego, char direccion);
+void sgteNivel(struct Juego *juego);
 
 #endif

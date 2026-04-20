@@ -13,13 +13,13 @@
 #include "tablero.h"
 
 /*
-* Nombre: disparar_armas
+* Nombre: dispararArmas
 * Parámetros:  Puntero al juego e índice del arma seleccionada (0-3)
 * Retorno: Booleano. true si el disparo se ejecutó, false si hubo error en dirección o ID de arma
 * Descripción: Gestiona la interfaz de disparo. Solicita al usuario una dirección  (WASD y QEZC), traduce el input a vectores (dir_x, dir_y) 
 *               y ejecuta la función de disparo correspondiente mediante el arreglo de punteros a función
 */
-bool disparar_armas(struct Juego *juego, int arma_id){
+bool dispararArmas(struct Juego *juego, int arma_id){
     if (arma_id < 0 || arma_id > 3){ //Si el id de arma es <0 o >3 es invalido
         return false; 
     }

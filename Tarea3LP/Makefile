@@ -4,7 +4,7 @@ JAVA  = java
 
 # Compila todos los .java
 all:
-	$(JAVAC) *.java
+	$(JAVAC) Componentes/*.java Entidades/*.java Mapa/*.java Main.java
 
 # Ejecutar Main
 run: all

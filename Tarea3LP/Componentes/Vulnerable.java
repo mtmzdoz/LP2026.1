@@ -1,5 +1,6 @@
 package Componentes;
 
-public class Vulnerable {
-    
-}
+public interface Vulnerable {
+
+    double evaluarDebilidad(Elemento elementoMagia);
+} 

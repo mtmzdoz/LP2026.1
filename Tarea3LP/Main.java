@@ -20,7 +20,7 @@ public class Main{
         Sector7 sector7 = new Sector7();
         Gongaga gongaga = new Gongaga();
         NucleoPlaneta nucleoPlaneta = new NucleoPlaneta();
-        Jugador cloud = new Jugador();
+        Jugador cloud = new Jugador(sector7);
         Zona zonaActual = sector7; 
 
         System.out.println("=== Inicio del juego ===");
@@ -33,23 +33,24 @@ public class Main{
             System.out.println("0. Salir del juego");
             System.out.print("Elige una opción: ");
 
-            int Opcion = -1;
+            int opcion = -1;
             try{
                 //Leer el input y lo convierte a int
-                Opcion = Integer.parseInt(Scan.next());
+                opcion = Integer.parseInt(Scan.next());
             }catch (Exception e){
                 System.out.println("Entrada inválida. Usa solo números.");
                 continue; 
             }
 
-            switch (Opcion){
+            switch (opcion){
                 case 1:
-                    System.out.println("\n(Sistema de viaje en construcción...)");
+                    cloud.getZonaActual().accionZona(cloud);
+    
                     break;
 
                 case 2:
                     System.out.println("\n--- Estadísticas de " + cloud.nombre + " ---");
-                    System.out.println("Nivel: " + cloud.getnivel());
+                    System.out.println("Nivel: " + cloud.getNivel());
                     break;
 
                 case 0:

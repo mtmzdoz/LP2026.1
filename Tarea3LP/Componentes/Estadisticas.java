@@ -23,52 +23,52 @@ public class Estadisticas {
     }
 
     //Getters 
-    public int gethpActual(){
+    public int getHpActual(){
         return hpActual;
     }
 
-    public int gethpMaximo(){
+    public int getHpMaximo(){
         return hpMaximo;
     }
 
-    public int getmpActual(){
+    public int getMpActual(){
         return mpActual;
     }
 
-    public int getmpMaximo(){
+    public int getMpMaximo(){
         return mpMaximo;
     }
 
-    public int getfuerza(){
+    public int getFuerza(){
         return fuerza;
     }
 
-    public int getmagia(){
+    public int getMagia(){
         return magia;
     }
 
     //Setters
-    public void sethpActual(int hpActual){
+    public void setHpActual(int hpActual){
         this.hpActual = hpActual;
     }
 
-    public void sethpMaximo(int hpMaximo){
+    public void setHpMaximo(int hpMaximo){
         this.hpMaximo = hpMaximo;
     }
 
-    public void setmpActual(int mpActual){
+    public void setMpActual(int mpActual){
         this.mpActual = mpActual;
     }
 
-    public void setmpMaximo(int mpMaximo){
+    public void setMpMaximo(int mpMaximo){
         this.mpMaximo = mpMaximo;
     }
 
-    public void setfuerza(int fuerza){
+    public void setFuerza(int fuerza){
         this.fuerza = fuerza;
     }
 
-    public void setmagia(int magia){
+    public void setMagia(int magia){
         this.magia = magia;
     }
 }

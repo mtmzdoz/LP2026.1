@@ -7,7 +7,7 @@ public class NucleoPlaneta extends Zona{
 
     //Constructor
     public NucleoPlaneta() {
-        super("Nucleo del Planeta", 20, null);
+        super("Núcleo del Planeta", 20, null);
         this.materiasMinimasRequeridas = materiasMinimasRequeridas;
     }
 

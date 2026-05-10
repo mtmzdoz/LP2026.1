@@ -55,9 +55,13 @@ public class Jugador {
     
     public void recibirXP(int xp){
         this.xpActual += xp;
+        System.out.println("+" + xp + " XP.");
+
         int xpNecesaria = 10 * this.nivel; // XPnecesaria = 10 * Nivelactual
 
-        if (this.xpActual >= xpNecesaria) {
+
+        System.out.println("Debug: recibirXP en Jugador.java");
+        while (this.xpActual >= xpNecesaria) {
             this.nivel++;
             this.xpActual -= xpNecesaria; // Restamos la XP usada para el nivel
 
@@ -66,10 +70,13 @@ public class Jugador {
             this.stats.setMpMaximo(this.stats.getMpMaximo() + 5);
             this.stats.setFuerza(this.stats.getFuerza() + 4);
             this.stats.setMagia(this.stats.getMagia() + 6);
-        
+            
             System.out.println("SUBIDA DE NIEVEL! Cloud ahora es nivel " + this.nivel + ".");
-        }else{
-            System.out.println("Has ganado " + xp + " XP. XP actual: " + this.xpActual + "/" + xpNecesaria);
+            System.out.println("+10 HP Máximo");
+            System.out.println("+5 MP Máximo");
+            System.out.println("+4 Fuerza");
+            System.out.println("+6 Magia");
+        
         }
     
     }
@@ -78,8 +85,8 @@ public class Jugador {
         int danoHecho = this.busterSword.calcularDanoFisico();
         int hpEnemigo = enemigo.getStats().getHpActual() - danoHecho;
         enemigo.getStats().setHpActual(hpEnemigo);
-
-        System.out.println("¡Cloud ataca con la " + busterSword.nombre + "!");
+        System.out.println("Debug: atacar en jugador.java");
+        System.out.println("\n¡Cloud ataca con la " + busterSword.nombre + "!");
         System.out.println("Causa " + danoHecho + " de daño a " + enemigo.nombre + ".");
     }
 

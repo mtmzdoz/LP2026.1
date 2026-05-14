@@ -16,7 +16,7 @@ public class Sector7 extends Zona{
 
 
     public Sector7() {
-        super("Sector 7", 1, null); //Null por mientras pero deberia ser soldado común
+        super("Sector 7", 1, null, null); //Null por mientras pero deberia ser soldado común
         this.tiendaLocal = new ArrayList<>();
         
     }
@@ -27,9 +27,9 @@ public class Sector7 extends Zona{
 
         System.out.println("\n--- SIMULADOR DE COMBATE ---");
 
-        while (Cloud.getStats().getHpActual() > 0 && enemigosVivos(enemigosSimulados)) {
+        while (Cloud.getStats().getHpActual() > 1 && enemigosVivos(enemigosSimulados)) {
             System.out.println("Debug: iniciar simulador en Sector7java");
-            System.out.println("HP Cloud: " + Cloud.getStats().getHpActual());
+            System.out.println("HP Cloud: " + Cloud.getStats().getHpActual() + "/" + Cloud.getStats().getHpMaximo());
             for (int i = 0; i < enemigosSimulados.size(); i++) {
                 Enemigo enemigo = enemigosSimulados.get(i);
                 if (enemigo.getStats().getHpActual() > 0) {
@@ -37,11 +37,19 @@ public class Sector7 extends Zona{
                 }
             }
             System.out.println("1. Ataque Físico");
+            System.out.println("2. Ataque Mágico ");
+            System.out.println("3. Retirarse del simulador");
             System.out.print("Elige tu movimiento: ");
 
-            String opcion = input.nextLine();
+            int opcion = -1;
+            try{
+                opcion = Integer.parseInt(input.nextLine());
+            }catch (Exception e){
+                System.out.println("Entrada inválida. Usa solo números porfavor.");
+                continue; 
+            }
 
-            if (opcion.equals("1")){
+            if (opcion == 1){
                 Enemigo enemigoAtacar = null;
                 for (Enemigo enemigo : enemigosSimulados) {
                     if (enemigo.getStats().getHpActual() > 0) {
@@ -54,39 +62,46 @@ public class Sector7 extends Zona{
                 }
 
                 for (Enemigo enemigo : enemigosSimulados) {
-                     // Solo atacan si están vivos y si Cloud aún tiene > 1 HP
                     if (enemigo.getStats().getHpActual() > 0 && Cloud.getStats().getHpActual() > 1) {
                         enemigo.atacar(Cloud); // Llama al método que pusiste arriba
                     }
                 }
 
+                if (Cloud.getStats().getHpActual() <= 1) {
+                    System.out.println("Has sido retirado del simulador.");
+                    break;
+                    // Aquí el bucle terminará porque la condición (HP > 1) ya no se cumple.
+                }
+            }else if (opcion == 2){
+                System.out.println("Funcionalidad de ataque mágico aún no implementada.");
+            }else if (opcion == 3){
+                System.out.println("Te retiras de la simulación...");
+                break; 
             }else{
-                System.out.println("Opción no válida, pierdes el turno.");
+                System.out.println("Opción no válida. Intenta de nuevo.");
             }
         }
 
-        // 4. Fin del combate
-        if (Cloud.getStats().getHpActual() > 1) {
-            System.out.println("\n¡Victoria! Simulacro exitoso.");
-
-            int xpTotalCombate = 0;
-            Random rnd = new Random();
-            for (Enemigo enemigo : enemigosSimulados) {
-                int xpEnemigo = rnd.nextInt(6) + 15; 
-                xpTotalCombate += xpEnemigo;
+      
+        boolean enemigoDerrotado = false;
+        for (Enemigo enemigo : enemigosSimulados) {
+            if (enemigo.getStats().getHpActual() <= 0) {
+                System.out.println("Recompensa de " + enemigo.nombre + ":");
+                enemigo.giveXpRecompensa(Cloud);
+                enemigoDerrotado = true;
             }
-            Cloud.recibirXP(xpTotalCombate);
-        }else{
-            System.out.println("\nHas sido retirado del simulador.");
-        }   
-
+        }
+           
+        if (!enemigoDerrotado){
+            System.out.println("\nNo has derrotado a ningún enemigo. No hay XP.");
+        }
     }
 
     public void abrirTienda(Jugador Cloud){
         
     }
 
-    @SuppressWarnings("resource") // Esto quita el aviso del IDE
+    @SuppressWarnings("resource") // Esto quita el aviso del input
     public void accionZona(Jugador Cloud){
         Scanner input = new Scanner(System.in);
         boolean salir = false;

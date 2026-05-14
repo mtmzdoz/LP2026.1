@@ -9,22 +9,34 @@ Instrucciones
 
 Consideraciones
 2. En EnemigoSalvaje no se hicieron get/set y se decidio por el add ya que era para inicializar, finalmente estos valores no se modifican durante el juego
+3. En el pdf no se menciona pero en el caso de que en EnemigoSimulador aparezcan 2 soldados, estos atacan al mismo tiempo
 
 
-a tener en cuenta
--Soldado Común HP: 50
--Soldado Común HP: 50
-1. Ataque Físico
-Elige tu movimiento: 1
-Debug: atacar en jugador.java
+RETOMAR aplicar la materia a la espada
 
-¡Cloud ataca con la Buster Sword!
-Causa 18 de daño a Soldado Común.
-Debug: atacar en EnemigoSimulador.java
--> Soldado Común ataca haciendo 15 de daño. HP restante: 185
-Debug: atacar en EnemigoSimulador.java
--> Soldado Común ataca haciendo 15 de daño. HP restante: 170
-Debug: iniciar simulador en Sector7java
-HP Cloud: 170
--Soldado Común HP: 32
--Soldado Común HP: 50
+¡Explorando la maleza has encontrado una Materia de RAYO!
+Se ha guardado en tu mochila.
+
+--- Menú Gongaga---
+1. Explorar la jungla (Acción de Zona)
+2. Volver a Sector 7
+2
+Regresando a Sector 7...
+================================
+Zona Actual: Sector 7 | Nivel: 10
+HP: 82/290 | XP: 84/100
+MP: 50/95 | Materias Equipadas: 0/5
+================================
+1. Explorar zona (Acción de Zona)
+2. Viajar a Gongaga
+3. Viajar a Núcleo del Planeta
+4. Ver estadísticas de Cloud
+5. Ver mochila
+0. Salir del juego
+Elige una opción: 5
+
+--- MOCHILA ---
+Chatarra: 0
+Materias obtenidas para poder usar:
+1. Materia de RAYO
+0. Salir de la mochila

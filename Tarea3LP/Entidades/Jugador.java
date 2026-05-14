@@ -3,6 +3,8 @@ package Entidades;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Scanner;
+
 import Componentes.Estadisticas;
 import Componentes.Materia;
 import Componentes.Elemento;
@@ -39,6 +41,9 @@ public class Jugador {
         public String nombre = "Buster Sword";
         private List<Materia> materiasEquipadas;
 
+        public Arma() {
+            this.materiasEquipadas = new ArrayList<>();
+        }
         public int calcularDanoMagico(Elemento elemento){
             return stats.getMagia();
         }
@@ -49,6 +54,9 @@ public class Jugador {
 
         public int calcularDanoLimite(){
             return 0;
+        }
+        public List<Materia> getMateriasEquipadas() {
+            return materiasEquipadas;
         }
     }
     
@@ -83,13 +91,63 @@ public class Jugador {
 
     public void atacar(Enemigo enemigo){
         int danoHecho = this.busterSword.calcularDanoFisico();
-        int hpEnemigo = enemigo.getStats().getHpActual() - danoHecho;
-        enemigo.getStats().setHpActual(hpEnemigo);
+        enemigo.getStats().recibirDMG(danoHecho);
         System.out.println("Debug: atacar en jugador.java");
         System.out.println("\n¡Cloud ataca con la " + busterSword.nombre + "!");
         System.out.println("Causa " + danoHecho + " de daño a " + enemigo.nombre + ".");
     }
 
+    public void verMochila(Scanner input){
+        boolean salir = false;
+
+        while (!salir){
+            System.out.println("\n--- MOCHILA ---");
+            System.out.println("Chatarra: " + this.chatarra);
+            if (mochila.isEmpty()){
+                System.out.println("Tu mochila está vacía.");
+            }else{
+                System.out.println("Materias obtenidas para poder usar:");
+                for (int i = 0; i < mochila.size(); i++){
+                    System.out.println((i + 1) + ". Materia de " + this.mochila.get(i).getElemento());
+                }
+            }
+            System.out.println("0. Salir de la mochila");
+            
+            int opcion = -1;
+            try {
+                opcion = Integer.parseInt(input.nextLine());
+            } catch (Exception e) {
+                System.out.println("Entrada inválida. Usa solo números.");
+                continue;
+            }
+
+            if (opcion == 1){
+                System.out.println("Debug: para probar la gestión de mochila.");
+            }else if (opcion == 2){
+                System.out.println("Debug: para probar la gestión de mochila.");
+            }else if (opcion == 0){
+                salir = true;
+            }else{
+                System.out.println("Opción no válida.");
+            }
+        }
+    }
+
+    public void equiparMateria(int indiceMochila) {
+        // 1. Verificamos si el arma tiene espacio (límite de 5)
+        if (this.busterSword.getMateriasEquipadas().size() < 5) {
+        
+         // 2. Quitamos la materia de la mochila
+            Materia m = this.mochila.remove(indiceMochila);
+        
+            // 3. La agregamos a la lista de la espada
+            this.busterSword.getMateriasEquipadas().add(m);
+        
+            System.out.println("\n[!] ¡Materia de " + m.getElemento() + " engastada en la Buster Sword!");
+        }else{
+            System.out.println("\n[!] El arma no tiene más ranuras disponibles (5/5).");
+        }
+    }
 
     //Getters
     public int getNivel(){

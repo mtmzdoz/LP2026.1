@@ -9,14 +9,14 @@ public abstract class Zona {
     protected int nivelRequerido;
     protected List<Enemigo> enemigosDisponibles;
     //yo
-    protected Zona zonaAnterior;
-    protected Zona zonaSiguiente;
+    protected Zona zonaRetorno;
 
     //Constructor
-    public Zona(String nombre, int nivelRequerido, List<Enemigo> enemigosDisponibles) {
+    public Zona(String nombre, int nivelRequerido, List<Enemigo> enemigosDisponibles, Zona retorno) {
         this.nombre = nombre;
         this.nivelRequerido = nivelRequerido;
         this.enemigosDisponibles = enemigosDisponibles;
+        this.zonaRetorno = retorno;
     }
 
     public void accionZona(Jugador Cloud){
@@ -28,24 +28,16 @@ public abstract class Zona {
     }
 
     //Getters
-    public Zona getZonaSiguiente(){
-        return zonaSiguiente; 
-    }
-    public Zona getZonaAAnterior(){
-        return zonaAnterior; 
-    }
-
+    public String getNombre() { return nombre; }
     public int getNivelRequerido() {
         return nivelRequerido;
     }
+    public Zona getZonaRetorno() {
+        return zonaRetorno;
+    }
 
     //Setters
-    public void setZonaSiguiente(Zona ZonaSig){
-        this.zonaSiguiente = ZonaSig;
-    }
-    public void setZonaAnterior(Zona ZonaAnt){
-        this.zonaAnterior = ZonaAnt;
-    }
+   
 
     
 }

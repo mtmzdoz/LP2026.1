@@ -18,19 +18,10 @@ public class Main{
         Scanner input = new Scanner(System.in); //para los inputs
 
         Sector7 sector7 = new Sector7();
-        Gongaga gongaga = new Gongaga();
-        NucleoPlaneta nucleoPlaneta = new NucleoPlaneta();
+        Gongaga gongaga = new Gongaga(sector7);
+        NucleoPlaneta nucleoPlaneta = new NucleoPlaneta(sector7);
         Jugador cloud = new Jugador(sector7);
         Zona zonaActual = sector7; 
-
-        sector7.setZonaAnterior(null);
-        sector7.setZonaSiguiente(gongaga);
-        
-        gongaga.setZonaAnterior(sector7);
-        gongaga.setZonaSiguiente(nucleoPlaneta);
-
-        nucleoPlaneta.setZonaAnterior(gongaga);
-        nucleoPlaneta.setZonaSiguiente(null);
         
         
 
@@ -39,20 +30,27 @@ public class Main{
         boolean Jugando = true;
 
         while (Jugando){
-            System.out.println("\n--- Zona Actual: " + zonaActual.nombre + " ---");
-            System.out.println("Nivel: " + cloud.getNivel() + " | XP: " + cloud.getXpActual() + "/" + (10 * cloud.getNivel()) + " | HP: " + cloud.getStats().getHpActual() + "/" + cloud.getStats().getHpMaximo() + " | MP: " + cloud.getStats().getMpActual() + "/" + cloud.getStats().getMpMaximo() + " | Fuerza: " + cloud.getStats().getFuerza() + " | Magia: " + cloud.getStats().getMagia() + " | Chatarra: " + cloud.getChatarra());
+            zonaActual = cloud.getZonaActual();
+            //int materiasActuales = cloud.getBusterSword().getMateriasEquipadas().size();
+            System.out.println("================================");
+            System.out.println("Zona Actual: " + zonaActual.nombre + " | Nivel: " + cloud.getNivel());
+            System.out.println("HP: " + cloud.getStats().getHpActual() + "/" + cloud.getStats().getHpMaximo() + " | XP: " + cloud.getXpActual() + "/" + (10 * cloud.getNivel()) + "\nMP: " + cloud.getStats().getMpActual() + "/" + cloud.getStats().getMpMaximo() + " | Materias Equipadas: " + cloud.getBusterSword().getMateriasEquipadas().size()  + "/5");
+            System.out.println("================================");
             System.out.println("1. Explorar zona (Acción de Zona)");
-            System.out.println("2. Avanzar a zona: " + zonaActual.getZonaSiguiente().nombre);
+            System.out.println("2. Viajar a Gongaga");
+            System.out.println("3. Viajar a Núcleo del Planeta");
+            System.out.println("4. Ver estadísticas de " + cloud.nombre);
+            System.out.println("5. Ver mochila");
             System.out.println("0. Salir del juego");
             System.out.print("Elige una opción: ");
+
 
             int opcion = -1;
             try{
                 //Leer el input y lo convierte a int
                 opcion = Integer.parseInt(input.nextLine());
             }catch (Exception e){
-                System.out.println("Entrada inválida. Usa solo números.");
-                input.nextLine();
+                System.out.println("Entrada inválida. Usa solo números porfavor.");
                 continue; 
             }
 
@@ -63,19 +61,38 @@ public class Main{
                     break;
 
                 case 2:
-                    Zona siguiente = cloud.getZonaActual().getZonaSiguiente();
-                    if (siguiente != null) {
-                    // Aquí aplicas la validación de nivel que querías
-                        if (cloud.getNivel() < siguiente.getNivelRequerido()) {
-                            System.out.println("\nNivel " + siguiente.getNivelRequerido() + " requerido.");
-                            System.out.println("Nivel actual: " + cloud.getNivel());
-                        } else {
-                            cloud.setZonaActual(siguiente);
-                            System.out.println("Viajando a " + siguiente.nombre + "...");
-                        }
-                    } else {
-                        System.out.println("No hay más zonas");
+                    if (cloud.getNivel() < gongaga.getNivelRequerido()){
+                        System.out.println("\nNivel " + gongaga.getNivelRequerido() + " requerido.");
+                        System.out.println("Nivel actual: " + cloud.getNivel());
+                    }else{
+                        cloud.setZonaActual(gongaga);
+                        System.out.println("Viajando a " + gongaga.nombre + "...");
+                        cloud.getZonaActual().accionZona(cloud);
+    
                     }
+                
+                    break;
+                case 3:
+                    if (cloud.getNivel() < nucleoPlaneta.getNivelRequerido()){
+                        System.out.println("\nNivel " + nucleoPlaneta.getNivelRequerido() + " requerido.");
+                        System.out.println("Nivel actual: " + cloud.getNivel());
+                    }else{
+                        cloud.setZonaActual(nucleoPlaneta);
+                        System.out.println("Viajando a " + nucleoPlaneta.nombre + "...");
+                        cloud.getZonaActual().accionZona(cloud);
+
+                    }
+                    break;
+                case 4:
+                    System.out.println("\n--- Estadísticas ---");
+                    System.out.println("Fuerza: " + cloud.getStats().getFuerza() + " | Magia: " + cloud.getStats().getMagia());
+                    System.out.println("Arma equipada: " + cloud.getBusterSword().nombre);
+                    System.out.println("Presiona Enter para volver al menú principal.");
+                    input.nextLine(); // Pausa para que el jugador pueda leer las estadísticas antes de volver al menú
+                    
+                    break;
+                case 5:
+                    cloud.verMochila(input);
                     break;
                 case 0:
                     System.out.println("Saliendo del juego...");

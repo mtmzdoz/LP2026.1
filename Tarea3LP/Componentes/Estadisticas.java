@@ -19,7 +19,7 @@ public class Estadisticas {
     }
 
     public void recibirDMG(int valor){
-        
+        this.hpActual = Math.max(0, this.hpActual - valor);
     }
 
     //Getters 

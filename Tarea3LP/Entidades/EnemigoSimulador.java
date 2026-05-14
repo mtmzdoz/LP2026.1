@@ -42,7 +42,7 @@ public class EnemigoSimulador extends Enemigo{
     }
 
     @Override
-    public void giveXpRecompensa(Jugador Cloud) {
+    public void giveXpRecompensa(Jugador Cloud){
         int xp = new Random().nextInt(6) + 15;
         Cloud.recibirXP(xp);
     }

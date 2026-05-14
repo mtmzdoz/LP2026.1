@@ -21,6 +21,7 @@
             this.inmunidades = new ArrayList<>();
         }
 
+        @Override
         public double evaluarDebilidad(Elemento elementoMagia){
             if(debilidades.contains(elementoMagia)){
                 return 2.0;

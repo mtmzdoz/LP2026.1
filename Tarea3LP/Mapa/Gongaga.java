@@ -89,7 +89,7 @@ public class Gongaga extends Zona{
 
                 
             } catch (Exception e) {
-                System.out.println("Entrada inválida. Usa solo números.");
+                System.out.println("Entrada inválida. Intenta de nuevo.");
             }
             if (opcion == 1){
                 double evento = random.nextDouble(); 
@@ -141,7 +141,7 @@ public class Gongaga extends Zona{
                 try{
                     objetivo = Integer.parseInt(input.nextLine()) -1; 
                 }catch (Exception e){
-                    System.out.println("Te tropezaste con una raíz y fallaste el ataque.");
+                    System.out.println("Entrada inválida. Intenta de nuevo.");
                 }
 
                // Restamos 1 para que el índice coincida con la lista
@@ -159,17 +159,13 @@ public class Gongaga extends Zona{
             }
         }
 
-        // RESULTADO FINAL
+       
         if (Cloud.getStats().getHpActual() <= 0) {
-            System.out.println("\n--- GAME OVER ---");
             System.out.println("Cloud ha caído en la jungla de Gongaga...");
+            System.out.println("Vuelves al inicio de todo");
             Cloud.setZonaActual(this.zonaRetorno);
-        } else {
-            System.out.println("\n¡Has sobrevivido a la emboscada!");
-            // Aquí podrías dar recompensas de XP como en el simulador
-        }
-
-        if (Cloud.getStats().getHpActual() > 0){ // Solo si Cloud no murió
+            
+        } else if (Cloud.getStats().getHpActual() > 0){ // Solo si Cloud no murió
             System.out.println("\n--- RECOMPENSAS DE BATALLA ---");
             boolean enemigoDerrotado = false;
 

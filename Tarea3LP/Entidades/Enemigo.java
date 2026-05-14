@@ -1,6 +1,7 @@
 package Entidades;
 
 
+import Componentes.Elemento;
 import Componentes.Estadisticas;
 
 public abstract class Enemigo {
@@ -24,6 +25,9 @@ public abstract class Enemigo {
         
     }   
 
+    public double evaluarDebilidad(Elemento elemento) {
+        return 1.0; 
+    }
 
     public Estadisticas getStats(){
         return stats;

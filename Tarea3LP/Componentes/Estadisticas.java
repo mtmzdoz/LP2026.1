@@ -1,6 +1,6 @@
 package Componentes;
 
-public class Estadisticas {
+public class Estadisticas{
     private int hpActual;
     private int hpMaximo;
     private int mpActual;
@@ -8,7 +8,12 @@ public class Estadisticas {
     private int fuerza;
     private int magia;
 
-    //Constructor
+    /*
+    * Constructor. Inicializa los valores máximos de HP, MP, fuerza y magia, 
+    * estableciendo los valores actuales al nivel del máximo.
+    * @param hpMaximo: int, mpMaximo: int, fuerza: int, magia: int
+    * @return Ninguno
+    */
     public Estadisticas(int hpMaximo, int mpMaximo, int fuerza, int magia){
         this.hpMaximo = hpMaximo;
         this.hpActual = hpMaximo;
@@ -18,6 +23,12 @@ public class Estadisticas {
         this.magia = magia;
     }
 
+    /*
+    * Reduce la vida de los enemigos basándose en un valor de daño recibido, 
+    * asegurando que la vida no baje de cero.
+    * @param valor: int
+    * @return void
+    */
     public void recibirDMG(int valor){
         this.hpActual = Math.max(0, this.hpActual - valor);
     }

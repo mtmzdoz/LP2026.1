@@ -1,22 +1,28 @@
 package Componentes;
 
-import Componentes.Elemento;
 
-public class Materia {
+public class Materia{
     private String nombre;
     private Elemento elemento;
 
 
-    public Materia(Elemento tipo) {
+    /*
+    * Constructor. Inicializa una nueva instancia de Materia 
+    * asignándole un tipo de elemento específico.
+    * @param tipo: Elemento
+    * @return Ninguno
+    */
+    public Materia(Elemento tipo){
         this.elemento = tipo;
         
     }
 
-    public String getNombre() {
+    //Getters
+    public String getNombre(){
         return nombre;
     }
 
-    public Elemento getElemento() {
+    public Elemento getElemento(){
         return elemento;
     }
 

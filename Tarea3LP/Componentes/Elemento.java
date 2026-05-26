@@ -1,6 +1,6 @@
 package Componentes;
 
-public enum Elemento {
+public enum Elemento{
     FUEGO,
     HIELO,
     RAYO,

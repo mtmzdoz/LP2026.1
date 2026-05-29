@@ -1,0 +1,30 @@
+#lang scheme
+
+;parametro vulnerabilidad:
+;retorno: el número total que aparece el recurso en escaneo.
+
+(define (crear-gusano vulnerabilidad)
+  (define (recorrer nodo)
+    (cond
+      [(null? nodo)  '()];;Lista vacía
+      [(number? nodo);;El nodo es un número
+       (if (vulnerabilidad nodo)
+           nodo  ;;#t
+           'X)]  ;;#f
+      [else (cons (recorrer (car nodo)) ;;El nodo es una lista, recursion para leerlo   
+            (recorrer (cdr nodo)))])) recorrer)
+
+;; 1. Fabricamos un gusano que detecta nodos impares como vulnerables
+(define rastreador-impar (crear-gusano odd?))
+
+;; 2. Prueba en red plana
+(rastreador-impar '(1 2 3 4 5))
+;; R: (1 X 3 X 5)
+
+;; 3. Prueba en red neuronal profunda (preservando sublistas anidadas)
+(rastreador-impar '(2 (7 8) ((10 3)) 1))
+;; R: (X (7 X) ((X 3)) 1)
+
+;; 4. Creación y ejecución en una sola linea.
+;; Buscamos nodos mayores a 50.
+((crear-gusano (lambda (x) (> x 50))) '(10 (99) (20 (150))))

@@ -1,27 +1,22 @@
 #lang scheme
 
+;parametro token: una cadena de texto (string) que representa la clave interceptada
+;retorno: el numero final tras sumar los valores ASCII de solo las letras
 (define (hash-desconexion token)
-  ;; Paso 4: Plegamos (sumamos) toda la lista numérica final, empezando en 0.
-  (foldl + 0
-         
-         ;; Paso 3: Mapeamos la lista filtrada convirtiendo cada letra a su ASCII.
-         (map char->integer
-              
-              ;; Paso 2: Filtramos la lista dejando únicamente las letras.
-              (filter char-alphabetic?
-                      
-                      ;; Paso 1: Convertimos el texto inicial a una lista de caracteres.
-                      (string->list token)))))
+  (foldl + 0;P4, plegar(sumar) toda la lista numérica anterior, empezando en 0
+         (map char->integer ;P3, se transforma la lista de letras a su valor númerico (ascii)
+              (filter char-alphabetic? ;P2, se elimina lo que no sean letras del alfabeto
+                      (string->list token))))) ;P1, texto inicial se convierte a una lista de caracteres
 
 
-;; Ejemplo 1: Token con letras, símbolos y números.
+; Ejemplo 1: Token con letras, símbolos y números.
 (hash-desconexion "N!u1lS#e*c")
-;; R: 586
+; R: 586
 
-;; Ejemplo 2: Token puramente corrupto (sin letras).
+; Ejemplo 2: Token puramente corrupto (sin letras).
 (hash-desconexion "12345!@#$")
-;; R: 0
+; R: 0
 
-;; Ejemplo 3: Un token relativamente limpio.
+; Ejemplo 3: Un token relativamente limpio.
 (hash-desconexion "A-B-C")
-;; R: 198
+; R: 198

@@ -1,52 +1,47 @@
 #lang scheme
 
+;Funcion aux para aplicar daemon
+;parametro numero: numero al que se le aplicara daemon
+;parametro daemons: lista de funciones matematicas de un arg
+;retorno: el numero final tras aplicarle los daemons
 (define (aplicar-daemon numero daemons)
     (cond
-      ;; Si ya no quedan ataques, devolvemos el número con el daño final.
-      [(null? daemons) numero]
-      
-      ;; Si quedan ataques, extraemos el primero, se lo aplicamos al número, 
-      ;; y pasamos el nuevo resultado recursivamente al resto de la lista.
-      [else (aplicar-daemon ((car daemons) numero) 
+      [(null? daemons) numero];Lista vacia, se devuelve el número modificado (caso 1)
+      [else (aplicar-daemon ((car daemons) numero);;modifica el primer elemento con daemon, recursion con la lista restante  
                              (cdr daemons))]))
 
+;parametro mapa: arbol n-ario que contiene numeros y 'X
+;parametro daemons: lista de funciones unarias (expresiones lambda). Representa un ataque secuencial 
+;retorno: una nueva lista generada con daemons aplicada a cada elemento y sin 'X, preservando el orden original.
 (define (ejecutor-cascada mapa daemons)
   (define (recorrer lista)
     (cond
-      ;; Caso Base: Se acabó el camino
-      [(null? lista) '()]
+      [(null? lista) '()] ;Lista vacia (caso 1)
       
-      ;; Caso sub-lista: Mantenemos la estructura usando cons
-      [(list? (car lista))
-       (cons (recorrer (car lista))
-             (recorrer (cdr lista)))]
+      [(list? (car lista)) ;Si hay sublista se mantiene la estructura usando cons (caso 2)
+       (cons (recorrer (car lista)) ;para recorrer la sublista
+             (recorrer (cdr lista)))] ;aavanza en la lista principal
              
-      ;; Caso Cortafuegos: Borramos saltándonos el cons
-      [(eq? (car lista) 'X)
+      [(eq? (car lista) 'X) ; si el elemento es una 'X se borra saltándonos el cons (caso 3)
        (recorrer (cdr lista))]
        
-      ;; Caso Número: Aplicamos los daemons y guardamos el resultado
-      [(number? (car lista))
-       (cons (aplicar-daemon (car lista) daemons)
-             (recorrer (cdr lista)))]))
-  (recorrer mapa));; para que se ejecute
+      [(number? (car lista)) ;Si el elemento es un número se aplica daemon y guardamos el resultado (caso 4)
+       (cons (aplicar-daemon (car lista) daemons) ;toma el primer elemento y lo manda a aploicar
+             (recorrer (cdr lista)))])) ; avanza en la lista principal
+  (recorrer mapa)) ;para que se ejecute
 
-  
-
-  
-
-;; Definimos nuestra secuencia de ataque:
-;; Capa 1: Sumar 5. Capa 2: Multiplicar por 2.
+; Definimos nuestra secuencia de ataque:
+; Capa 1: Sumar 5. Capa 2: Multiplicar por 2.
 (define ataque (list (lambda (x) (+ x 5)) (lambda (x) (* x 2))))
-;; 1. El ejecutor ataca una lista plana, eliminando las ’X.
-;; El 2 muta a: (2 + 5) * 2 = 14 y para el 5: (5 + 5) * 2 = 20
+; 1. El ejecutor ataca una lista plana, eliminando las ’X.
+; El 2 muta a: (2 + 5) * 2 = 14 y para el 5: (5 + 5) * 2 = 20
 (ejecutor-cascada '(X 2 X X 5) ataque)
-;;R: ’(14 20)
+;R: '(14 20)
 
-;; 2. El ejecutor ataca una red profunda.
+; 2. El ejecutor ataca una red profunda.
 (ejecutor-cascada '(X (1 X) ((X 3)) X 10) ataque)
-;;R: ’((12) ((16)) 30)
+;R: '((12) ((16)) 30)
 
-;; 3. Si un clúster entero era de ’X, queda como sublista vacía.
+; 3. Si un clúster entero era de ’X, queda como sublista vacía.
 (ejecutor-cascada '(X (X X) 1) ataque)
-;;R: ’(() 12)
+;R: '(() 12)

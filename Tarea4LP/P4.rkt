@@ -9,14 +9,3 @@
                       (string->list token))))) ;P1, texto inicial se convierte a una lista de caracteres
 
 
-; Ejemplo 1: Token con letras, símbolos y números.
-(hash-desconexion "N!u1lS#e*c")
-; R: 586
-
-; Ejemplo 2: Token puramente corrupto (sin letras).
-(hash-desconexion "12345!@#$")
-; R: 0
-
-; Ejemplo 3: Un token relativamente limpio.
-(hash-desconexion "A-B-C")
-; R: 198

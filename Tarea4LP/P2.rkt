@@ -13,17 +13,4 @@
       [else (cons (recorrer (car nodo)) ;El nodo es una lista, toma el primer elemento y recursion para leerlo  (caso else)
             (recorrer (cdr nodo)))])) recorrer) ;toma el resto de la lista y  usa rec. devuelve la funcion recorrer
 
-; 1. Fabricamos un gusano que detecta nodos impares como vulnerables
-(define rastreador-impar (crear-gusano odd?))
 
-; 2. Prueba en red plana
-(rastreador-impar '(1 2 3 4 5))
-; R: '(1 X 3 X 5)
-
-; 3. Prueba en red neuronal profunda (preservando sublistas anidadas)
-(rastreador-impar '(2 (7 8) ((10 3)) 1))
-; R: '(X (7 X) ((X 3)) 1)
-
-; 4. Creación y ejecución en una sola linea.
-; Buscamos nodos mayores a 50.
-((crear-gusano (lambda (x) (> x 50))) '(10 (99) (20 (150))))

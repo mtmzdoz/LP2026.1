@@ -25,13 +25,3 @@
         (cons (daemon (car lista-actual)) lista-invertida))))) ;comienza nueva lista y modifica el primer elemento con dameon. devuelve la lista-invertida  
 (icebreaker-cola daemon puertos)
 
-; 1. Definimos los "puertos" (nuestra lista de estadísticas de ataque)
-; Nota: El apóstrofe ' antes de los paréntesis es la forma rápida en Scheme 
-; de decir "esto es una lista de datos, no intentes ejecutarlo como una función".
-(define puertos '(1 2 3))
-
-; 2. Definimos el "daemon" (nuestra función matemática)
-; Esta función lambda recibe un valor "x" y le suma 5.
-(define daemon (lambda (x) (modulo (+ x 15) 10)))
-
-(icebreaker-simple daemon '(5 12 8 105))

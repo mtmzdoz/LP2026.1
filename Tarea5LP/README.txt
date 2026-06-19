@@ -27,3 +27,7 @@ R: Disponibles = [’INF-131’, ’INF-132’, ’AUX-200’].
 evaluar_inscripcion(['INF-129', 'MAT-070'], ['INF-131', 'MAT-071', 'FIS-110'], Inscritos, Rechazados).
 R: Inscritos = [’INF-131’, ’MAT-071’],
    Rechazados = [’FIS-110’].
+
+
+Para 4.3
+La descontruccion de la lista Solicitudes se hace manual mediante [Cabeza]

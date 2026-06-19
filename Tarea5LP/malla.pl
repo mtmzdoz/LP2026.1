@@ -149,7 +149,7 @@ es_requisito(SiglaOrigen, SiglaDestino) :- dependencia(SiglaOrigen, Requisito), 
 
 % -------------------------------------------------------------------
 %habilitado(+Aprobados, +Sigla)
-%Verifica si una asignatura en especifica no ha sido cursada aún y si el alumno 
+%predicado auxiliar que verifica si una asignatura en especifica no ha sido cursada aún y si el alumno 
 %cumple con todos sus prerrequisitos.
 habilitado(Aprobados, Sigla) :-
     not(member(Sigla, Aprobados)), %se verifica que el ramo no esté ya en la lista de aprobados
@@ -165,20 +165,38 @@ ramos_inscribibles(Aprobados, Semestre, Disponibles) :-
 
 
 % -------------------------------------------------------------------
+%pertenece(+X, +Lista)
+%predicado auxiliar para verificar si un elemento X pertenece a una lista dada, implementado de forma recursiva.
+pertenece(X, [X|_]).
+pertenece(X, [_|L]) :- pertenece(X, L).
+
+%falta_requisito(+Aprobados, +Sigla)
+%predicado auxiliar que falla si el alumno cumple todo, en caso contrario, retorna true si encuentra 
+% al menos un prerrequisito de la asignatura que no esté en la lista de Aprobados.
+falta_requisito(Aprobados, Sigla) :-
+    dependencia(Req, Sigla),
+    not(pertenece(Req, Aprobados)).
+
+%cumple_requisitos(+Aprobados, +Sigla)
+%predicado auxiliar que verifica que el ramo no esté aprobado y que cumpla sus requisitos
+%utilizando únicamente lógica pura y recursión, sin findall ni subset.
+cumple_requisitos(Aprobados, Sigla) :-
+    not(pertenece(Sigla, Aprobados)), % Si ya lo aprobó, se rechaza (Regla del foro)
+    not(falta_requisito(Aprobados, Sigla)). % Se aprueba solo si NO le falta ningún requ
+
 %evaluar_inscripcion
 %Procesa una lista de solicitudes manualmente mediante recursión estructural cola.
 %Si un ramo cumple los requisitos, lo añade a inscritos, en caso contrario, a rechazados.
-
 evaluar_inscripcion(_, [], [], []). %no hay mas solicitudes, se cierran los acumuladores
 
 %Cuando el ramo de la solicitud cumple los requisitos
 % Se deconstruye la lista y el Ramo se agrega al acumulador de Inscritos.
 evaluar_inscripcion(Aprobados, [Ramo | RestoSolicitudes], [Ramo | RestoInscritos], Rechazados) :-
-    habilitado(Aprobados, Ramo),
+    cumple_requisitos(Aprobados, Ramo),
     evaluar_inscripcion(Aprobados, RestoSolicitudes, RestoInscritos, Rechazados).
 
 %Cuando el ramo de la solicitud no cumple
 % Se deconstruye la lista y el Ramo se agrega al acumulador de Rechazados.
 evaluar_inscripcion(Aprobados, [Ramo | RestoSolicitudes], Inscritos, [Ramo | RestoRechazados]) :-
-    not(habilitado(Aprobados, Ramo)),
+    not(cumple_requisitos(Aprobados, Ramo)),
     evaluar_inscripcion(Aprobados, RestoSolicitudes, Inscritos, RestoRechazados).

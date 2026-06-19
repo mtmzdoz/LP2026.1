@@ -141,8 +141,8 @@ dependencia('INF-164', 'INF-538').
 
 % -------------------------------------------------------------------
 %diapo23
-%es_requisito
-%Mediante recursión relacional se comprueba si SiglaOrigen es un prerequisito directo o indirecto de SiglaDestino
+%es_requisito(+SiglaOrigen, +SiglaDestino)
+%Mediante recursión relacional se comprueba si SiglaOrigen es un prerequisito directo o indirecto de SiglaDestino.
 es_requisito(SiglaOrigen, SiglaDestino) :- dependencia(SiglaOrigen, SiglaDestino).
 es_requisito(SiglaOrigen, SiglaDestino) :- dependencia(SiglaOrigen, Requisito), es_requisito(Requisito, SiglaDestino).
 
@@ -156,7 +156,7 @@ habilitado(Aprobados, Sigla) :-
     findall(Requisito, dependencia(Requisito, Sigla), ListaRequisitos), %vemos prerequisitos del ramo
     subset(ListaRequisitos, Aprobados). %se verifica que la lista de requisitos este dentro de los aprobados
 
-%ramos_inscribibles
+%ramos_inscribibles(+Aprobados, +Semestre, -Disponibles)
 %Devuelve la lista Disponible, en la que se encuentran los ramos de un semestre en especifico
 %que un alumno puede tomar si es que esta habilitado.
 ramos_inscribibles(Aprobados, Semestre, Disponibles) :-
@@ -183,7 +183,7 @@ cumple_requisitos(Aprobados, Sigla) :-
     not(pertenece(Sigla, Aprobados)), %Si el ramo esta aprobado, se rechaza
     not(falta_requisito(Aprobados, Sigla)). %Se aprueba solo si no le falta ningun requ
 
-%evaluar_inscripcion
+%evaluar_inscripcion(+Aprobados, +Solicitudes, -Inscritos, -Rechazados)
 %Procesa una lista de solicitudes manualmente mediante recursión estructural cola.
 %Si un ramo cumple los requisitos, lo añade a inscritos, en caso contrario, a rechazados.
 evaluar_inscripcion(_, [], [], []). %no hay mas solicitudes, se cierran los acumuladores

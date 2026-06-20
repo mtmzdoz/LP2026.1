@@ -29,7 +29,7 @@ asignatura(20, 'INF-135', 4, 6).
 asignatura(21, 'MAT-053', 4, 5).
 asignatura(22, 'FIS-114', 4, 6).
 asignatura(23, 'HXW-009', 4, 3).
-asignatura(24, 'AUX-201', 4, 3).
+asignatura(24, 'AUX-201', 4, 4).
 
 %semestre5
 asignatura(25, 'INF-138', 5, 5).
@@ -68,7 +68,7 @@ asignatura(49, 'INF-302', 9, 5).
 asignatura(50, 'INF-169', 9, 6).
 asignatura(51, 'INF-170', 9, 6).
 asignatura(52, 'INF-171', 9, 6).
-asignatura(53, 'INF-168', 9, 6).
+asignatura(53, 'INF-168', 9, 7).
 
 %semestre10
 asignatura(54, 'INF-539', 10, 4).

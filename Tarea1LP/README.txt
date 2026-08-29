@@ -1,3 +1,4 @@
+Nota:72
 Nombre: Matilde Vásquez
 Rol: 202473652-3
 Rut: 21.715.078-7
